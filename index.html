@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Disk Scheduling Simulator — Neon Cyberpunk</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-dark">
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="topbar neon-border">
+    <div class="title-left">
+      <div class="logo">🛰️</div>
+      <div>
+        <div class="app-title">Disk Scheduling Simulator</div>
+        <div class="app-sub">Neon Cyberpunk • FCFS · SSTF · SCAN · C-SCAN · LOOK · C-LOOK</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="reset-btn" class="btn ghost">Reset</button>
+      <button id="run-btn" class="btn glow">Run</button>
+    </div>
+  </header>
+
+
+  <!-- MAIN GRID -->
+  <main class="main-grid">
+
+    <!-- A — INPUT PANEL -->
+    <aside class="panel input-panel neon-panel">
+      <h3>Simulator Controls</h3>
+
+      <label>Disk Requests</label>
+      <textarea id="requests-input" class="input" rows="3" placeholder="98, 183, 37, 122, 14, 124, 65, 67"></textarea>
+
+      <div class="row">
+        <div class="col">
+          <label>Initial Head</label>
+          <input id="head-input" class="input" type="number" value="50">
+        </div>
+        <div class="col">
+          <label>Disk Size</label>
+          <input id="disk-size-input" class="input" type="number" value="200">
+        </div>
+      </div>
+
+      <label>Algorithm</label>
+      <select id="algorithm-select" class="input">
+        <option value="FCFS">FCFS</option>
+        <option value="SSTF">SSTF</option>
+        <option value="SCAN">SCAN</option>
+        <option value="CSCAN">C-SCAN</option>
+        <option value="LOOK">LOOK</option>
+        <option value="CLOOK">C-LOOK</option>
+      </select>
+
+      <label>Direction (SCAN / LOOK)</label>
+      <select id="direction-select" class="input">
+        <option value="right">Right →</option>
+        <option value="left">← Left</option>
+      </select>
+
+      <label>Animation Speed</label>
+      <input id="speed-slider" type="range" min="0.2" max="3" step="0.1" value="1" class="slider">
+
+      <div class="play-controls">
+        <button id="play-btn" class="btn glow small">Play</button>
+        <button id="pause-btn" class="btn ghost small">Pause</button>
+        <button id="step-btn" class="btn ghost small">Step</button>
+      </div>
+
+      <div id="error-msg" class="error hidden"></div>
+    </aside>
+
+
+    <!-- B — EXPLANATION + CODE TABS -->
+    <section class="panel explain-panel neon-panel">
+
+      <div class="tabs-row">
+        <div id="algo-tabs" class="tabs">
+          <button class="tab active" data-alg="FCFS">FCFS</button>
+          <button class="tab" data-alg="SSTF">SSTF</button>
+          <button class="tab" data-alg="SCAN">SCAN</button>
+          <button class="tab" data-alg="CSCAN">C-SCAN</button>
+          <button class="tab" data-alg="LOOK">LOOK</button>
+          <button class="tab" data-alg="CLOOK">C-LOOK</button>
+        </div>
+
+        <button id="copy-code-btn" class="btn ghost small">Copy</button>
+      </div>
+
+      <div class="tab-content">
+        <div id="algo-explain" class="explain-scroll">
+          Select an algorithm to view explanation.
+        </div>
+
+        <pre class="code-scroll">
+<code id="code-block">
+// Code will load here automatically…
+</code>
+        </pre>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- C — GRAPH PANEL -->
+  <section class="panel viz-panel neon-panel">
+
+    <div class="viz-header">
+      <h3>Disk Track Visualization</h3>
+      <div class="legend">
+        <span class="dot start"></span> Start
+        <span class="dot req"></span> Requests
+        <span class="dot path"></span> Path
+      </div>
+    </div>
+
+    <div id="visualization" class="visualization"></div>
+
+    <div class="metrics-row">
+      <div class="metric neon-card">
+        <div id="total-seek" class="m-value">—</div>
+        <div class="m-label">Total Seek</div>
+      </div>
+      <div class="metric neon-card">
+        <div id="avg-seek" class="m-value">—</div>
+        <div class="m-label">Average Seek</div>
+      </div>
+      <div class="metric neon-card">
+        <div id="processed" class="m-value">—</div>
+        <div class="m-label">Processed</div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <footer class="footer neon-border">Neon UI · Standalone · Algorithms stored in <code>algorithms/</code></footer>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
