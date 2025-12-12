@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Disk Scheduler Simulator</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,40 +16,39 @@
 
   <div class="w-full h-full main-container">
 
-    <!-- Navigation Bar -->
     <nav class="w-full">
       <div class="nav-content">
+
         <div class="nav-brand">
           <svg width="36" height="36" viewBox="0 0 36 36">
-            <circle cx="18" cy="18" r="14" fill="#2563eb" stroke="#1d4ed8" stroke-width="2" />
-            <circle cx="18" cy="18" r="10" fill="none" stroke="white" stroke-width="1.5" />
-            <circle cx="18" cy="18" r="6" fill="none" stroke="white" stroke-width="1.5" />
-            <circle cx="18" cy="18" r="2" fill="white" />
-            <line x1="18" y1="4" x2="18" y2="10" stroke="white" stroke-width="2" />
+            <circle cx="18" cy="18" r="14" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>
+            <circle cx="18" cy="18" r="10" fill="none" stroke="white" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="6" fill="none" stroke="white" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="2" fill="white"/>
+            <line x1="18" y1="4" x2="18" y2="10" stroke="white" stroke-width="2"/>
           </svg>
 
           <div>
-            <h1 class="nav-title">Disk Scheduler Simulator</h1>
+            <h1 id="hero-title" class="nav-title">Disk Scheduler Simulator</h1>
             <p class="nav-subtitle">Professional Disk Arm Movement Analysis Tool</p>
           </div>
         </div>
+
+        <button id="themeToggle" class="btn btn-secondary">🌙 Dark Mode</button>
       </div>
     </nav>
 
-    <!-- Main Content -->
     <section class="w-full content-section">
 
-      <!-- Left Sidebar -->
       <div class="left-sidebar">
 
-        <!-- Disk Config Panel -->
         <div class="panel panel-padding">
           <h3 class="panel-title panel-title-blue">Disk Configuration</h3>
 
           <div class="form-group">
             <div>
               <label class="label-text">Disk Size (cylinders)</label>
-              <input id="diskSize" type="number" value="200" min="100" max="500" class="input-field">
+              <input id="diskSize" type="number" value="100" min="10" max="1000" class="input-field">
             </div>
 
             <div>
@@ -57,22 +57,21 @@
             </div>
 
             <div>
-              <label class="label-text">Initial Direction (SCAN / C-SCAN)</label>
+              <label class="label-text">Initial Direction</label>
               <select id="direction" class="input-field">
-                <option value="right">Right (Increasing)</option>
-                <option value="left">Left (Decreasing)</option>
+                <option value="right">Right</option>
+                <option value="left">Left</option>
               </select>
             </div>
           </div>
         </div>
 
-        <!-- Algorithm Selection -->
         <div class="panel panel-padding">
           <h3 class="panel-title panel-title-orange">Scheduling Algorithm</h3>
 
           <div class="form-group">
             <div>
-              <label class="label-text">Select Algorithm</label>
+              <label class="label-text">Algorithm</label>
               <select id="algoSelect" class="input-field">
                 <option value="FCFS">FCFS</option>
                 <option value="SSTF">SSTF</option>
@@ -87,7 +86,6 @@
           </div>
         </div>
 
-        <!-- Add Request -->
         <div class="panel panel-padding">
           <h3 class="panel-title panel-title-green">Add Disk Request</h3>
 
@@ -98,13 +96,12 @@
             </div>
 
             <div class="button-row">
-              <button id="addBtn" class="btn btn-primary btn-flex">Add Request</button>
-              <button id="loadSample" class="btn btn-success">Load Sample</button>
+              <button id="addBtn" class="btn btn-primary btn-flex">Add</button>
+              <button id="loadSample" class="btn btn-success btn-flex">Load Sample</button>
             </div>
           </div>
         </div>
 
-        <!-- Request Queue -->
         <div class="panel panel-padding">
           <h3 class="panel-title panel-title-orange">Request Queue</h3>
           <div id="requestList" class="request-list-container"></div>
@@ -113,13 +110,10 @@
             <button id="clearAll" class="btn btn-secondary btn-flex">Clear All</button>
           </div>
         </div>
-
       </div>
 
-      <!-- Right Panel -->
       <div class="right-content">
 
-        <!-- Graph -->
         <div class="panel graph-panel">
           <div class="panel-header">
             <h3 class="panel-header-title">Disk Arm Movement Graph</h3>
@@ -130,25 +124,27 @@
             <canvas id="diskGraph"></canvas>
           </div>
 
+          <div class="animation-controls">
+            <div class="anim-buttons">
+              <button id="playBtn" class="btn btn-primary">▶ Play</button>
+              <button id="pauseBtn" class="btn btn-secondary">⏸ Pause</button>
+              <button id="resetBtn" class="btn btn-danger">⏹ Reset</button>
+            </div>
+
+            <div class="anim-speed">
+              <label class="label-text">Speed:</label>
+              <input id="speedRange" type="range" min="0.25" max="3" step="0.25" value="1">
+              <span id="speedLabel">1x</span>
+            </div>
+          </div>
+
           <div class="legend">
-            <div class="legend-item">
-              <div class="legend-line"></div>
-              <span class="legend-text">Seek Path</span>
-            </div>
-
-            <div class="legend-item">
-              <div class="legend-circle-green"></div>
-              <span class="legend-text">Start Position</span>
-            </div>
-
-            <div class="legend-item">
-              <div class="legend-circle-red"></div>
-              <span class="legend-text">Requests</span>
-            </div>
+            <div class="legend-item"><div class="legend-line"></div> <span class="legend-text">Path</span></div>
+            <div class="legend-item"><div class="legend-circle-green"></div> <span class="legend-text">Start</span></div>
+            <div class="legend-item"><div class="legend-circle-red"></div> <span class="legend-text">Requests</span></div>
           </div>
         </div>
 
-        <!-- Metrics -->
         <div class="panel panel-padding">
           <h3 class="panel-header-title margin-bottom-16">Performance Metrics</h3>
 
@@ -170,16 +166,17 @@
           </div>
         </div>
 
-        <!-- Sequence Log -->
         <div class="panel panel-padding">
           <h3 class="panel-header-title margin-bottom-16">Execution Sequence</h3>
           <div id="sequenceLog"></div>
         </div>
 
       </div>
+
     </section>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="js/main.js"></script>
+
 </body>
 </html>
