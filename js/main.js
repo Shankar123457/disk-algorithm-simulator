@@ -21,39 +21,33 @@ function randomRequests(n, max) {
 
 function init() {
 
-  /* Load theme */
+  /* Theme Load */
   const saved = localStorage.getItem("ds_theme");
   if (saved === "dark") {
     document.body.classList.add("dark");
     $("themeToggle").textContent = "☀️ Light Mode";
-  } else {
-    $("themeToggle").textContent = "🌙 Dark Mode";
-  }
+  } else $("themeToggle").textContent = "🌙 Dark Mode";
 
-  /* Defaults */
+  /* Default Values */
   $("diskSize").value = 100;
   $("initialHead").value = 50;
   $("initialHead").max = 100;
   $("requestInput").max = 99;
+  $("requestInput").value = 50;
 
   requests = randomRequests(30, 100);
-
   renderRequests();
 
-  /* Init graph */
+  /* Graph */
   initGraph("diskGraph");
   drawEmptyGraph();
 
-  /* EVENTS */
   $("addBtn").onclick = addRequest;
   $("loadSample").onclick = loadSample;
   $("clearAll").onclick = clearAll;
   $("runSim").onclick = runSim;
 
-  $("playBtn").onclick = () => {
-    if (!simulation) return alert("Run simulation first");
-    startAnimation();
-  };
+  $("playBtn").onclick = () => simulation && startAnimation();
   $("pauseBtn").onclick = pauseAnimation;
   $("resetBtn").onclick = () => resetAnimation();
 
@@ -67,8 +61,9 @@ function init() {
     $("themeToggle").textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
     localStorage.setItem("ds_theme", dark ? "dark" : "light");
 
-    if (simulation) prepareStaticDrawing(simulation.sequence, parseInt($("diskSize").value));
-    else drawEmptyGraph();
+    simulation
+      ? prepareStaticDrawing(simulation.sequence, parseInt($("diskSize").value))
+      : drawEmptyGraph();
   };
 }
 
@@ -111,25 +106,21 @@ function runSim() {
   const dir = $("direction").value;
 
   const reqs = alg.sanitizeRequests(requests, max);
-
-  if (reqs.length === 0) return alert("No valid requests");
+  if (!reqs.length) return alert("No valid requests");
 
   if (algo === "FCFS") simulation = alg.fcfs(head, reqs);
   else if (algo === "SSTF") simulation = alg.sstf(head, reqs);
   else if (algo === "SCAN") simulation = alg.scan(head, reqs, max, dir);
   else if (algo === "CSCAN") simulation = alg.cscan(head, reqs, max, dir);
   else if (algo === "LOOK") simulation = alg.look(head, reqs, max, dir);
-  else if (algo === "CLOOK") simulation = alg.clook(head, reqs, max, dir);
+  else simulation = alg.clook(head, reqs, max, dir);
 
   prepareStaticDrawing(simulation.sequence, max);
 
   $("totalSeek").textContent = simulation.totalSeek;
   $("avgSeek").textContent = (simulation.totalSeek / reqs.length).toFixed(2);
   $("reqServed").textContent = reqs.length;
-
-  $("sequenceLog").textContent =
-    simulation.sequence.join(" → ") +
-    `\nSteps: ${simulation.sequence.length - 1}`;
+  $("sequenceLog").textContent = simulation.sequence.join(" → ");
 }
 
 window.onload = init;

@@ -41,12 +41,14 @@ body {
 .btn-danger { background:#ef4444; color:#fff; }
 .btn-danger:hover { background:#dc2626; }
 
+/* Panels */
 .panel {
   background: #ffffff;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
+/* Inputs */
 .input-field {
   width: 100%;
   padding: 8px 12px;
@@ -64,6 +66,7 @@ body {
   box-shadow:0 0 0 3px rgba(37,99,235,0.2);
 }
 
+/* Layout */
 .main-container {
   display: flex;
   flex-direction: column;
@@ -71,7 +74,7 @@ body {
 }
 
 nav {
-  background:white;
+  background:white;                 /* ⇦ ORIGINAL NAVBAR RESTORED */
   border-bottom:1px solid #e5e7eb;
   padding: 12px 24px;
 }
@@ -111,7 +114,7 @@ nav {
 .button-row { display:flex; gap:10px; }
 .btn-flex { flex:1; }
 
-/* Right content */
+/* Right Column */
 .right-content {
   flex:1;
   padding:20px;
@@ -141,6 +144,7 @@ nav {
   border:1px solid #e5e7eb;
 }
 
+/* Animation */
 .animation-controls {
   margin-top:12px;
   display:flex;
@@ -153,6 +157,7 @@ nav {
 
 #speedRange { width:150px; }
 
+/* Legend */
 .legend {
   margin-top:16px;
   padding-top:12px;
@@ -169,6 +174,7 @@ nav {
 .legend-circle-green { width:12px; height:12px; background:#10b981; border-radius:50%; }
 .legend-circle-red { width:12px; height:12px; background:#ef4444; border-radius:50%; }
 
+/* Metrics */
 .metrics-grid {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -187,6 +193,7 @@ nav {
 .metric-label { font-size:12px; color:#6b7280; font-weight:600; }
 .metric-value { font-size:24px; font-weight:700; }
 
+/* Sequence Log */
 #sequenceLog {
   background:#f9fafb;
   border:1px solid #e5e7eb;
@@ -196,35 +203,3 @@ nav {
   overflow-y:auto;
   border-radius:6px;
 }
-
-/* DARK THEME */
-body.dark { background:#0f0f11; color:white; }
-
-body.dark nav { background:#1a1c1f; border-bottom-color:#2f3133; }
-
-body.dark .left-sidebar { background:#1a1c1f; border-right-color:#2f3133; }
-
-body.dark .panel { background:#1f2127; border-color:#2f3133; }
-
-body.dark .input-field {
-  background:#2a2c31;
-  border-color:#555;
-  color:#e5e7eb;
-}
-
-body.dark #diskGraph {
-  background:#111215;
-  border-color:#2a2d33;
-}
-
-body.dark .legend-text { color:#cbd5e1; }
-
-body.dark #sequenceLog {
-  background:#111215;
-  border-color:#2a2d33;
-  color:#e5e7eb;
-}
-
-body.dark .metric-blue { background:#1e293b; }
-body.dark .metric-green { background:#062f1a; }
-body.dark .metric-orange { background:#3b2e0f; }
