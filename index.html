@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Disk Scheduler Simulator</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="h-full w-full overflow-hidden">
+
+  <div class="w-full h-full main-container">
+
+    <nav class="w-full">
+      <div class="nav-content">
+
+        <div class="nav-brand">
+          <svg width="36" height="36" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="14" fill="#ffffff33" stroke="#ffffff" stroke-width="2"/>
+            <circle cx="18" cy="18" r="10" fill="none" stroke="white" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="6" fill="none" stroke="white" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="2" fill="white"/>
+          </svg>
+
+          <div>
+            <h1 class="nav-title">Disk Scheduler Simulator</h1>
+            <p class="nav-subtitle">Professional Disk Arm Movement Analysis Tool</p>
+          </div>
+        </div>
+
+        <button id="themeToggle" class="btn btn-secondary">🌙 Dark Mode</button>
+      </div>
+    </nav>
+
+    <section class="w-full content-section">
+
+      <div class="left-sidebar">
+
+        <div class="panel panel-padding">
+          <h3 class="panel-title panel-title-blue">Disk Configuration</h3>
+
+          <div class="form-group">
+
+            <div>
+              <label class="label-text">Disk Size (cylinders)</label>
+              <input id="diskSize" type="number" value="100" min="10" max="1000" class="input-field">
+            </div>
+
+            <div>
+              <label class="label-text">Initial Head Position</label>
+              <input id="initialHead" type="number" value="50" min="0" class="input-field">
+            </div>
+
+            <div>
+              <label class="label-text">Initial Direction</label>
+              <select id="direction" class="input-field">
+                <option value="right">Right</option>
+                <option value="left">Left</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel panel-padding">
+          <h3 class="panel-title panel-title-orange">Scheduling Algorithm</h3>
+
+          <div class="form-group">
+            <div>
+              <label class="label-text">Algorithm</label>
+              <select id="algoSelect" class="input-field">
+                <option value="FCFS">FCFS</option>
+                <option value="SSTF">SSTF</option>
+                <option value="SCAN">SCAN</option>
+                <option value="CSCAN">C-SCAN</option>
+                <option value="LOOK">LOOK</option>
+                <option value="CLOOK">C-LOOK</option>
+              </select>
+            </div>
+
+            <button id="runSim" class="btn btn-warning btn-full">▶ Run Simulation</button>
+
+          </div>
+        </div>
+
+        <div class="panel panel-padding">
+          <h3 class="panel-title panel-title-green">Add Disk Request</h3>
+
+          <div class="form-group">
+
+            <div>
+              <label class="label-text">Cylinder Number</label>
+              <input id="requestInput" type="number" value="50" min="0" class="input-field">
+            </div>
+
+            <div class="button-row">
+              <button id="addBtn" class="btn btn-primary btn-flex">Add</button>
+              <button id="loadSample" class="btn btn-success btn-flex">Load Sample</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel panel-padding">
+          <h3 class="panel-title panel-title-orange">Request Queue</h3>
+          <div id="requestList" class="request-list-container"></div>
+
+          <div class="button-row margin-top-12">
+            <button id="clearAll" class="btn btn-secondary btn-flex">Clear All</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="right-content">
+
+        <div class="panel graph-panel">
+          <div class="panel-header">
+            <h3 class="panel-header-title">Disk Arm Movement Graph</h3>
+            <div class="badge">2D Visualization</div>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="diskGraph"></canvas>
+          </div>
+
+          <div class="animation-controls">
+            <div class="anim-buttons">
+              <button id="playBtn" class="btn btn-primary">▶ Play</button>
+              <button id="pauseBtn" class="btn btn-secondary">⏸ Pause</button>
+              <button id="resetBtn" class="btn btn-danger">⏹ Reset</button>
+            </div>
+
+            <div class="anim-speed">
+              <label class="label-text">Speed:</label>
+              <input id="speedRange" type="range" min="0.25" max="3" step="0.25" value="1">
+              <span id="speedLabel">1x</span>
+            </div>
+          </div>
+
+          <div class="legend">
+            <div class="legend-item"><div class="legend-line"></div> <span class="legend-text">Path</span></div>
+            <div class="legend-item"><div class="legend-circle-green"></div> <span class="legend-text">Start</span></div>
+            <div class="legend-item"><div class="legend-circle-red"></div> <span class="legend-text">Requests</span></div>
+          </div>
+        </div>
+
+        <div class="panel panel-padding">
+          <h3 class="panel-header-title margin-bottom-16">Performance Metrics</h3>
+
+          <div class="metrics-grid">
+            <div class="metric-card metric-blue">
+              <div class="metric-label">Total Seek Distance</div>
+              <div id="totalSeek" class="metric-value metric-value-blue">—</div>
+            </div>
+
+            <div class="metric-card metric-green">
+              <div class="metric-label">Average Seek Time</div>
+              <div id="avgSeek" class="metric-value metric-value-green">—</div>
+            </div>
+
+            <div class="metric-card metric-orange">
+              <div class="metric-label">Requests Served</div>
+              <div id="reqServed" class="metric-value metric-value-orange">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-padding">
+          <h3 class="panel-header-title margin-bottom-16">Execution Sequence</h3>
+          <div id="sequenceLog"></div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>
